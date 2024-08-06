@@ -14,7 +14,7 @@ SECRET_KEY = "django-insecure-e1l&x#wf*&f0jkb#5gma4fe3cg%ocygvj3063!d!lbxta^4(tr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: list[str] = []
 
 
 # Application definition
@@ -66,7 +66,7 @@ WSGI_APPLICATION = "lottery_app.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "lottery_db",
+        "NAME": "postgres",
         "HOST": "postgres",
         "PORT": 5432,
         "USER": "db_user",
@@ -90,11 +90,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
 USE_I18N = True
 
+TIME_ZONE = "Europe/Amsterdam"
 USE_TZ = True
 
 

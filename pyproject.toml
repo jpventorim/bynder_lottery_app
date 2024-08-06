@@ -9,6 +9,7 @@ package-mode = false
 python = "^3.12"
 Django = "^5.0.7"
 django-ninja = "^1.2.2"
+psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
@@ -21,7 +22,7 @@ ipython = "^8.26.0"
 django-stubs = "^5.0.4"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.8.3"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
@@ -77,8 +78,11 @@ max_line_length = 90
 aggressive = 3
 experimental = true
 
+[tool.django-stubs]
+django_settings_module = "lottery_app.settings"
+
 [tool.mypy]
-files = ["lottery_app", "tests"]
+files = ["lottery_app"]
 plugins = ["mypy_django_plugin.main"]
 python_version = "3.12"
 show_error_codes = true
