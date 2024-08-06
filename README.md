@@ -1,0 +1,1 @@
+# bynder_lottery_app
