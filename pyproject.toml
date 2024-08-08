@@ -10,6 +10,8 @@ python = "^3.12"
 Django = "^5.0.7"
 django-ninja = "^1.2.2"
 psycopg2-binary = "^2.9.9"
+django-ninja-extra = "^0.21.2"
+django-ninja-jwt = "^5.3.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
@@ -49,7 +51,6 @@ select = [
     "F",    # pyflakes
     "FA",   # flake8-future-annotations
     "FLY",  # flynt
-    "G",    # flake8-logging-format
     "I",    # isort
     "INP",  # flake8-no-pep420
     "ISC",  # flake8-implicit-str-concat
@@ -65,13 +66,21 @@ select = [
     "S",    # flake8-bandit
     "SIM",  # flake8-simplify
     "T10",  # flake8-debugger
-    "TD",   # flake8-todos
     "UP",   # pyupgrade
     "W",    # pycodestyle
 ]
 
+
 [tool.ruff.lint.isort]
 lines-after-imports = 2
+required-imports = ["from __future__ import annotations"]
+
+
+[tool.ruff.lint.isort.sections]
+"django" = ['django']
+
+[tool.ruff.lint.per-file-ignores]
+"**/migrations/**" = ['RUF012', 'E501']
 
 [tool.autopep8]
 max_line_length = 90
@@ -93,3 +102,8 @@ no_implicit_optional = true
 strict_equality = true
 warn_redundant_casts = true
 warn_unreachable = true
+
+
+[[tool.mypy.overrides]]
+module = "ninja_jwt.*"
+ignore_missing_imports = true
