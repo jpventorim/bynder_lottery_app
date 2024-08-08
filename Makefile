@@ -23,7 +23,7 @@ docker-run:
 # 
 # Debugging/Testing
 # 
-docker-django-shell:
+django-shell:
 	$(DOCKER) $(MANAGE_PY) shell
 
 docker-shell:
