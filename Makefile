@@ -1,24 +1,28 @@
-DOCKER=docker-compose exec -it lottery
+DOCKER=docker compose exec -it lottery
 MANAGE_PY = python manage.py
 
 # 
 # Build and Setup
 # 
 build:
-	docker-compose pull
-	docker-compose up --build
+	docker compose pull
+	docker compose up --build
 
 docker-migrate:
 	$(DOCKER) $(MANAGE_PY) migrate
 
 docker-down:
-	docker-compose down -v --remove-orphans ${ARGS}
+	docker compose down -v --remove-orphans ${ARGS}
 
-# 
-# Runners
-# 
 docker-run:
-	docker-compose up ${ARGS}
+	docker compose up ${ARGS}
+
+create-test-user:
+	curl -X 'POST' \
+		'http://localhost:8000/users/register' \
+		-H 'accept: */*' \
+		-H 'Content-Type: application/json' \
+		-d '{"email": "test_user@example.com", "password": "pass", "first_name": "Test", "last_name": "User"}'
 
 # 
 # Debugging/Testing

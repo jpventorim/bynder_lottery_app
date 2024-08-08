@@ -18,8 +18,8 @@ api = NinjaAPI(
         AuthRateThrottle("100/s"),
     ],
 )
-from django.urls import path
-api.add_router("/lottery", "games.views.router")
+api.add_router("/users", "users.views.router")
+api.add_router("/games", "games.views.router")
 
 # JWT Auth routers
 api.add_router("/token", tags=["Auth"], router=obtain_pair_router)
