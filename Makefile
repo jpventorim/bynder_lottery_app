@@ -24,6 +24,13 @@ create-test-user:
 		-H 'Content-Type: application/json' \
 		-d '{"email": "test_user@example.com", "password": "pass", "first_name": "Test", "last_name": "User"}'
 
+get-token-test-user:
+	curl -X 'POST' \
+	'http://localhost:8000/token/pair' \
+	-H 'accept: application/json' \
+	-H 'Content-Type: application/json' \
+	-d '{"password": "pass","email": "test_user@example.com"}'
+
 # 
 # Debugging/Testing
 # 

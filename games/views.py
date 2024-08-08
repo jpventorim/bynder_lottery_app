@@ -22,14 +22,13 @@ router = Router(tags=["Lottery Ballots"])
     "/submit_ballot",
     response={201: BallotOut},
     url_name="submit_ballot",
-    description="Allows user to submit one ballot to a lottery game",
+    description="Allows user to submit one ballot to a lottery game within the next week",
 )
 def post_submit_ballot(
     request: HttpRequest,
     payload: BallotIn,
 ) -> tuple[int, LotteryBallots]:
     user: User = request.user
-    # TODO: improve this with helper function
     ballot = LotteryBallots.objects.create(user=user, game_date=payload.game_date)
 
     return 201, ballot
@@ -45,7 +44,6 @@ def get_winning_ballot(
     request: HttpRequest,
     draw_date: PastDate,
 ) -> tuple[int, WinningBallots]:
-    # TODO: improve this with helper function
     winning_ballot = get_object_or_404(WinningBallots, draw_date=draw_date)
 
     return 200, winning_ballot

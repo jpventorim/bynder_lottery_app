@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from typing import TYPE_CHECKING
 
 from ninja import Field, ModelSchema, Schema
+from ninja.errors import ValidationError
 from pydantic import UUID4, PastDate, field_validator
 
 from games.models import WinningBallots
@@ -18,26 +19,31 @@ class BallotIn(Schema):
 
     @field_validator("game_date")
     @classmethod
-    def validate_date_is_not_past(cls, game_date: datetime) -> datetime:
-        today = datetime.now(tz=UTC)
+    def validate_game_date(cls, game_date: datetime) -> datetime:
+        """Validate if game_date is not in the past or more than a week from today"""
+        today = datetime.now(tz=UTC).date()
 
         # Only the date is relevant for the comparison
-        if game_date < today.date():
-            raise ValueError("Date of the game cannot be in the past")
-        return game_date
+        if game_date < today:
+            raise ValidationError("Date of the game cannot be in the past")
 
-    # TODO: Validate date is not too far in the future. Maybe max of 1 week
+        if game_date > today + timedelta(days=7):
+            raise ValidationError(
+                "Date of the game cannot be more than one week in the future",
+            )
+
+        return game_date
 
 
 class BallotOut(BallotIn):
-    ballot_id: UUID4
+    id: UUID4
     created_at: datetime
 
 
 class WinningBallotOut(ModelSchema):
-    winning_ballot: UUID4
+    winning_ballot_id: UUID4
     draw_date: PastDate
 
     class Meta:
         model = WinningBallots
-        fields: ClassVar = ["winning_ballot", "draw_date"]
+        fields: ClassVar = ["winning_ballot_id", "draw_date"]
