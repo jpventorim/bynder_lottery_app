@@ -25,6 +25,7 @@ coverage = "^7.6.1"
 ipdb = "^0.13.13"
 ipython = "^8.26.0"
 django-stubs = "^5.0.4"
+django-extensions = "^3.2.3"
 
 [build-system]
 requires = ["poetry-core>=1.8.3"]
@@ -73,11 +74,9 @@ select = [
     "W",    # pycodestyle
 ]
 
-
 [tool.ruff.lint.isort]
 lines-after-imports = 2
 required-imports = ["from __future__ import annotations"]
-
 
 [tool.ruff.lint.isort.sections]
 "django" = ['django']
@@ -90,12 +89,9 @@ max_line_length = 90
 aggressive = 3
 experimental = true
 
-[tool.django-stubs]
-django_settings_module = "lottery_app.settings"
-
 [tool.mypy]
 files = ["lottery_app"]
-plugins = ["mypy_django_plugin.main"]
+plugins = ["mypy_django_plugin.main", "pydantic.mypy"]
 python_version = "3.12"
 show_error_codes = true
 
@@ -106,7 +102,9 @@ strict_equality = true
 warn_redundant_casts = true
 warn_unreachable = true
 
-
 [[tool.mypy.overrides]]
-module = "ninja_jwt.*"
+module = ["ninja_jwt.*", "celery.*"]
 ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "lottery_app.settings"

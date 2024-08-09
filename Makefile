@@ -22,20 +22,20 @@ create-test-user:
 		'http://localhost:8000/users/register' \
 		-H 'accept: */*' \
 		-H 'Content-Type: application/json' \
-		-d '{"email": "test_user@example.com", "password": "pass", "first_name": "Test", "last_name": "User"}'
+		-d '{"username": "test_user", "email": "test_user@example.com", "password": "pass", "first_name": "Test", "last_name": "User"}'
 
 get-token-test-user:
 	curl -X 'POST' \
 	'http://localhost:8000/token/pair' \
 	-H 'accept: application/json' \
 	-H 'Content-Type: application/json' \
-	-d '{"password": "pass","email": "test_user@example.com"}'
+	-d '{"username": "test_user", "password": "pass"}'
 
 # 
 # Debugging/Testing
 # 
 django-shell:
-	$(DOCKER) $(MANAGE_PY) shell
+	$(DOCKER) $(MANAGE_PY) shell_plus --ipython
 
 docker-shell:
 	$(DOCKER) /bin/bash
@@ -47,7 +47,7 @@ test:
 # Linters
 # 
 mypy-check:
-	$(DOCKER) poetry run mypy
+	$(DOCKER) poetry run mypy .
 
 ruff-format:
 	$(DOCKER) poetry run ruff format .

@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Utilities
+    "django_extensions",
+    # API
     "ninja",
     # Local apps
     "users",
