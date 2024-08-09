@@ -617,6 +617,20 @@ files = [
 tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipython", "littleutils", "pytest", "rich"]
 
 [[package]]
+name = "freezegun"
+version = "1.5.1"
+description = "Let your Python tests travel through time"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "freezegun-1.5.1-py3-none-any.whl", hash = "sha256:bf111d7138a8abe55ab48a71755673dbaa4ab87f4cff5634a4442dfec34c15f1"},
+    {file = "freezegun-1.5.1.tar.gz", hash = "sha256:b29dedfcda6d5e8e083ce71b2b542753ad48cfec44037b3fc79702e2980a89e9"},
+]
+
+[package.dependencies]
+python-dateutil = ">=2.7"
+
+[[package]]
 name = "idna"
 version = "3.7"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -1381,4 +1395,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "fcf17b88db42d32e910139e59b1ecca1bed3db6f640b9e44706679f826f32b31"
+content-hash = "57d2e37961a0e7fd9edfb48de7428bca9381e0a1cb6c39f9ea1a479ec6a5c272"

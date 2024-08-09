@@ -26,6 +26,7 @@ ipdb = "^0.13.13"
 ipython = "^8.26.0"
 django-stubs = "^5.0.4"
 django-extensions = "^3.2.3"
+freezegun = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core>=1.8.3"]
@@ -35,8 +36,13 @@ build-backend = "poetry.core.masonry.api"
 django_find_project = true
 python_files = ["test*.py"]
 addopts = [
+    "--reuse-db",
     "--ds=lottery_app.settings",
     "--pdbcls=IPython.terminal.debugger:Pdb",
+]
+filterwarnings = [
+    "ignore",
+    "default:::lottery_app",
 ]
 
 [tool.ruff]
@@ -83,6 +89,7 @@ required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/migrations/**" = ['RUF012', 'E501']
+"**/test*/**" = ["S101", "PLR2004"]
 
 [tool.autopep8]
 max_line_length = 90

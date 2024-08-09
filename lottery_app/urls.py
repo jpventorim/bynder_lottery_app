@@ -10,6 +10,7 @@ from ninja_jwt.routers.verify import verify_router
 
 
 api = NinjaAPI(
+    urls_namespace="lottery",
     title="Lottery API",
     description="Lottery API to submit and check results of lottery games",
     auth=JWTAuth(),
