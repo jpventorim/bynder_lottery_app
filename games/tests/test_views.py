@@ -11,9 +11,9 @@ from games.models import WinningBallots
 
 def test_post_submit_ballot__valid_date(
     logged_client: Client,
-    today,
-    api_auth_header: str,
-):
+    today: date,
+    api_auth_header: dict[str, str],
+) -> None:
     url = reverse("lottery:submit_ballot")
     payload = {"game_date": today}
 
@@ -32,9 +32,9 @@ def test_post_submit_ballot__valid_date(
 
 def test_post_submit_ballot__past_date_fails(
     logged_client: Client,
-    today,
-    api_auth_header: str,
-):
+    today: date,
+    api_auth_header: dict[str, str],
+) -> None:
     game_date = today - timedelta(days=1)
     url = reverse("lottery:submit_ballot")
     payload = {"game_date": game_date}
@@ -53,7 +53,7 @@ def test_post_submit_ballot__past_date_fails(
     assert resp_body["msg"] == "Value error, Date of the game cannot be in the past"
 
 
-def test_post_submit_ballot__unauthorized(logged_client: Client, today):
+def test_post_submit_ballot__unauthorized(logged_client: Client, today: date) -> None:
     url = reverse("lottery:submit_ballot")
     payload = {"game_date": today}
 
@@ -67,11 +67,14 @@ def test_post_submit_ballot__unauthorized(logged_client: Client, today):
     assert response.json() == {"detail": "Unauthorized"}
 
 
-def test_get_winning_ballot(logged_client: Client, api_auth_header: dict[str, str]):
+def test_get_winning_ballot(
+    logged_client: Client,
+    api_auth_header: dict[str, str],
+) -> None:
     url = reverse("lottery:winning_ballot")
 
     with freeze_time(datetime.now(tz=UTC) - timedelta(days=1)):
-        draw_date = datetime.now(tz=UTC).date()
+        draw_date = str(datetime.now(tz=UTC).date())
         WinningBallots.objects.create()
 
     response = logged_client.get(
@@ -83,16 +86,16 @@ def test_get_winning_ballot(logged_client: Client, api_auth_header: dict[str, st
     assert response.status_code == 200
     resp_body = response.json()
     assert resp_body["winning_ballot_id"]
-    assert resp_body["draw_date"] == str(draw_date)
+    assert resp_body["draw_date"] == draw_date
 
 
 def test_get_winning_ballot__not_found(
     logged_client: Client,
     api_auth_header: dict[str, str],
     today: date,
-):
+) -> None:
     url = reverse("lottery:winning_ballot")
-    draw_date = today - timedelta(days=1)
+    draw_date = str(today - timedelta(days=1))
 
     response = logged_client.get(
         url,
@@ -109,11 +112,11 @@ def test_get_winning_ballot__future_date_fails(
     logged_client: Client,
     api_auth_header: dict[str, str],
     today: date,
-):
+) -> None:
     url = reverse("lottery:winning_ballot")
     response = logged_client.get(
         url,
-        data={"draw_date": today},
+        data={"draw_date": str(today)},
         content_type="application/json",
         headers=api_auth_header,
     )
@@ -125,11 +128,11 @@ def test_get_winning_ballot__future_date_fails(
     assert resp_body["msg"] == "Date should be in the past"
 
 
-def test_get_winning_ballot__unauthorized(logged_client: Client):
+def test_get_winning_ballot__unauthorized(logged_client: Client) -> None:
     url = reverse("lottery:winning_ballot")
 
     with freeze_time(datetime.now(tz=UTC) - timedelta(days=1)):
-        draw_date = datetime.now(tz=UTC).date()
+        draw_date = str(datetime.now(tz=UTC).date())
         WinningBallots.objects.create()
 
     response = logged_client.get(url, data={"draw_date": draw_date})

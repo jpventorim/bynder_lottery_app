@@ -26,6 +26,6 @@ def lottery_draw() -> None:
         if ballots:
             winning_ballot = secrets.choice(ballots)
             report_winning_ballot(winning_ballot)
-            logger.info(f"Lottery Winner id:  {winning_ballot}. Game on {game_date}")
+            logger.info(f"Lottery Winner id: {winning_ballot}. Game on {game_date}")
         else:
             logger.warning(f"No ballots found for game on: {game_date}")
