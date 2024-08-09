@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from datetime import date
 
+from django.db.models import QuerySet
 from pydantic import UUID4
 
 from games.models import LotteryBallots, WinningBallots
 
 
-def get_list_of_ballot_ids(game_date: date) -> list[UUID4]:
+def get_list_of_ballot_ids(game_date: date) -> QuerySet[LotteryBallots, UUID4]:
     """Retrieves a list of ballot ids for a specific date"""
 
     # Make sure `is_winner` is false so it can support multiple drawings in one day

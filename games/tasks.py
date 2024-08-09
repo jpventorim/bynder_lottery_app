@@ -17,7 +17,7 @@ logger = get_task_logger(__name__)
     autoretry_for=(Exception,),
     retry_kwargs={"max_retries": 10, "countdown": 60},
 )
-def lottery_draw():
+def lottery_draw() -> None:
     with transaction.atomic():
         # Uses the previous day
         game_date: date = datetime.now(tz=UTC).date() - timedelta(days=1)

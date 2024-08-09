@@ -22,6 +22,8 @@ class LotteryBallots(models.Model):
     is_winner = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    objects = models.Manager()
+
 
 class WinningBallots(models.Model):
     winning_ballot_id = models.UUIDField(
@@ -30,6 +32,8 @@ class WinningBallots(models.Model):
         editable=False,
     )
     draw_date = models.DateField(auto_now_add=True)
+
+    objects = models.Manager()
 
     class Meta:
         # Index draw_date in descending order

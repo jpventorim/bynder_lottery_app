@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from ninja import Router
 from pydantic import PastDate
 
 from games.models import LotteryBallots, WinningBallots
 from games.schemas import BallotIn, BallotOut, WinningBallotOut
+from lottery_app.authentication import AuthenticatedHttpRequest
 
 
 if TYPE_CHECKING:
@@ -25,7 +25,7 @@ router = Router(tags=["Lottery Ballots"])
     description="Allows user to submit one ballot to a lottery game within the next week",
 )
 def post_submit_ballot(
-    request: HttpRequest,
+    request: AuthenticatedHttpRequest,
     payload: BallotIn,
 ) -> tuple[int, LotteryBallots]:
     user: User = request.user
@@ -41,7 +41,7 @@ def post_submit_ballot(
     description="Allows user to fetch winning ballot of a specified date",
 )
 def get_winning_ballot(
-    request: HttpRequest,
+    request: AuthenticatedHttpRequest,
     draw_date: PastDate,
 ) -> tuple[int, WinningBallots]:
     winning_ballot = get_object_or_404(WinningBallots, draw_date=draw_date)

@@ -4,7 +4,6 @@ from datetime import UTC, date, datetime, timedelta
 from typing import TYPE_CHECKING
 
 from ninja import Field, ModelSchema, Schema
-from ninja.errors import ValidationError
 from pydantic import UUID4, PastDate, field_validator
 
 from games.models import WinningBallots
@@ -25,10 +24,10 @@ class BallotIn(Schema):
 
         # Only the date is relevant for the comparison
         if game_date < today:
-            raise ValidationError("Date of the game cannot be in the past")
+            raise ValueError("Date of the game cannot be in the past")
 
         if game_date > today + timedelta(days=7):
-            raise ValidationError(
+            raise ValueError(
                 "Date of the game cannot be more than one week in the future",
             )
 
