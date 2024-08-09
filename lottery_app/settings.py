@@ -129,4 +129,10 @@ CELERY_BEAT_SCHEDULE = {
         "task": "games.tasks.lottery_draw",
         "schedule": crontab(hour=0, minute=0),
     },
+    # NOTE: Uncomment the code below to run the task every minute
+    # "lottery_draw_every_minute": {
+    #     "task": "games.tasks.lottery_draw",
+    #     "schedule": crontab(minute="*/1"),
+    # },
+    # END-NOTE
 }

@@ -79,6 +79,9 @@ select = [
     "UP",   # pyupgrade
     "W",    # pycodestyle
 ]
+ignore = [
+    "ERA001" # commented-out-code
+]
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
