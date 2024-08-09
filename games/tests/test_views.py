@@ -53,6 +53,20 @@ def test_post_submit_ballot__past_date_fails(
     assert resp_body["msg"] == "Value error, Date of the game cannot be in the past"
 
 
+def test_post_submit_ballot__unauthorized(logged_client: Client, today):
+    url = reverse("lottery:submit_ballot")
+    payload = {"game_date": today}
+
+    response = logged_client.post(
+        url,
+        data=payload,
+        content_type="application/json",
+    )
+
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Unauthorized"}
+
+
 def test_get_winning_ballot(logged_client: Client, api_auth_header: dict[str, str]):
     url = reverse("lottery:winning_ballot")
 
@@ -109,3 +123,16 @@ def test_get_winning_ballot__future_date_fails(
     assert resp_body["type"] == "date_past"
     assert resp_body["loc"] == ["query", "draw_date"]
     assert resp_body["msg"] == "Date should be in the past"
+
+
+def test_get_winning_ballot__unauthorized(logged_client: Client):
+    url = reverse("lottery:winning_ballot")
+
+    with freeze_time(datetime.now(tz=UTC) - timedelta(days=1)):
+        draw_date = datetime.now(tz=UTC).date()
+        WinningBallots.objects.create()
+
+    response = logged_client.get(url, data={"draw_date": draw_date})
+
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Unauthorized"}
